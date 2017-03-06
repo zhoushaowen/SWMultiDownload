@@ -1,0 +1,353 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		36EA5E031E6D05B800A69DEF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 36EA5E021E6D05B800A69DEF /* main.m */; };
+		36EA5E061E6D05B800A69DEF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 36EA5E051E6D05B800A69DEF /* AppDelegate.m */; };
+		36EA5E091E6D05B800A69DEF /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 36EA5E081E6D05B800A69DEF /* ViewController.m */; };
+		36EA5E0C1E6D05B800A69DEF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 36EA5E0A1E6D05B800A69DEF /* Main.storyboard */; };
+		36EA5E0E1E6D05B800A69DEF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36EA5E0D1E6D05B800A69DEF /* Assets.xcassets */; };
+		36EA5E111E6D05B800A69DEF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 36EA5E0F1E6D05B800A69DEF /* LaunchScreen.storyboard */; };
+		36EA5E1F1E6D060D00A69DEF /* SWMultiDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 36EA5E1A1E6D060D00A69DEF /* SWMultiDownloadManager.m */; };
+		36EA5E201E6D060D00A69DEF /* SWMultiDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 36EA5E1C1E6D060D00A69DEF /* SWMultiDownloadOperation.m */; };
+		36EA5E211E6D060D00A69DEF /* SWSingleDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 36EA5E1E1E6D060D00A69DEF /* SWSingleDownloader.m */; };
+		36EA5E251E6D090D00A69DEF /* SWTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 36EA5E231E6D090D00A69DEF /* SWTableViewCell.m */; };
+		36EA5E261E6D090D00A69DEF /* SWTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36EA5E241E6D090D00A69DEF /* SWTableViewCell.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		36EA5DFE1E6D05B800A69DEF /* SWMultiDownload.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SWMultiDownload.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		36EA5E021E6D05B800A69DEF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		36EA5E041E6D05B800A69DEF /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		36EA5E051E6D05B800A69DEF /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		36EA5E071E6D05B800A69DEF /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		36EA5E081E6D05B800A69DEF /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		36EA5E0B1E6D05B800A69DEF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		36EA5E0D1E6D05B800A69DEF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		36EA5E101E6D05B800A69DEF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		36EA5E121E6D05B800A69DEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		36EA5E191E6D060D00A69DEF /* SWMultiDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWMultiDownloadManager.h; sourceTree = "<group>"; };
+		36EA5E1A1E6D060D00A69DEF /* SWMultiDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWMultiDownloadManager.m; sourceTree = "<group>"; };
+		36EA5E1B1E6D060D00A69DEF /* SWMultiDownloadOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWMultiDownloadOperation.h; sourceTree = "<group>"; };
+		36EA5E1C1E6D060D00A69DEF /* SWMultiDownloadOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWMultiDownloadOperation.m; sourceTree = "<group>"; };
+		36EA5E1D1E6D060D00A69DEF /* SWSingleDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWSingleDownloader.h; sourceTree = "<group>"; };
+		36EA5E1E1E6D060D00A69DEF /* SWSingleDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWSingleDownloader.m; sourceTree = "<group>"; };
+		36EA5E221E6D090D00A69DEF /* SWTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWTableViewCell.h; sourceTree = "<group>"; };
+		36EA5E231E6D090D00A69DEF /* SWTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWTableViewCell.m; sourceTree = "<group>"; };
+		36EA5E241E6D090D00A69DEF /* SWTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SWTableViewCell.xib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		36EA5DFB1E6D05B700A69DEF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		36EA5DF51E6D05B700A69DEF = {
+			isa = PBXGroup;
+			children = (
+				36EA5E001E6D05B800A69DEF /* SWMultiDownload */,
+				36EA5DFF1E6D05B800A69DEF /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		36EA5DFF1E6D05B800A69DEF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				36EA5DFE1E6D05B800A69DEF /* SWMultiDownload.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		36EA5E001E6D05B800A69DEF /* SWMultiDownload */ = {
+			isa = PBXGroup;
+			children = (
+				36EA5E181E6D05C600A69DEF /* SWMultiDownload */,
+				36EA5E041E6D05B800A69DEF /* AppDelegate.h */,
+				36EA5E051E6D05B800A69DEF /* AppDelegate.m */,
+				36EA5E071E6D05B800A69DEF /* ViewController.h */,
+				36EA5E081E6D05B800A69DEF /* ViewController.m */,
+				36EA5E221E6D090D00A69DEF /* SWTableViewCell.h */,
+				36EA5E231E6D090D00A69DEF /* SWTableViewCell.m */,
+				36EA5E241E6D090D00A69DEF /* SWTableViewCell.xib */,
+				36EA5E0A1E6D05B800A69DEF /* Main.storyboard */,
+				36EA5E0D1E6D05B800A69DEF /* Assets.xcassets */,
+				36EA5E0F1E6D05B800A69DEF /* LaunchScreen.storyboard */,
+				36EA5E121E6D05B800A69DEF /* Info.plist */,
+				36EA5E011E6D05B800A69DEF /* Supporting Files */,
+			);
+			path = SWMultiDownload;
+			sourceTree = "<group>";
+		};
+		36EA5E011E6D05B800A69DEF /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				36EA5E021E6D05B800A69DEF /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		36EA5E181E6D05C600A69DEF /* SWMultiDownload */ = {
+			isa = PBXGroup;
+			children = (
+				36EA5E191E6D060D00A69DEF /* SWMultiDownloadManager.h */,
+				36EA5E1A1E6D060D00A69DEF /* SWMultiDownloadManager.m */,
+				36EA5E1B1E6D060D00A69DEF /* SWMultiDownloadOperation.h */,
+				36EA5E1C1E6D060D00A69DEF /* SWMultiDownloadOperation.m */,
+				36EA5E1D1E6D060D00A69DEF /* SWSingleDownloader.h */,
+				36EA5E1E1E6D060D00A69DEF /* SWSingleDownloader.m */,
+			);
+			path = SWMultiDownload;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		36EA5DFD1E6D05B700A69DEF /* SWMultiDownload */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 36EA5E151E6D05B800A69DEF /* Build configuration list for PBXNativeTarget "SWMultiDownload" */;
+			buildPhases = (
+				36EA5DFA1E6D05B700A69DEF /* Sources */,
+				36EA5DFB1E6D05B700A69DEF /* Frameworks */,
+				36EA5DFC1E6D05B700A69DEF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SWMultiDownload;
+			productName = SWMultiDownload;
+			productReference = 36EA5DFE1E6D05B800A69DEF /* SWMultiDownload.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		36EA5DF61E6D05B700A69DEF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = Yidu;
+				TargetAttributes = {
+					36EA5DFD1E6D05B700A69DEF = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = 2YW229246G;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 36EA5DF91E6D05B700A69DEF /* Build configuration list for PBXProject "SWMultiDownload" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 36EA5DF51E6D05B700A69DEF;
+			productRefGroup = 36EA5DFF1E6D05B800A69DEF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				36EA5DFD1E6D05B700A69DEF /* SWMultiDownload */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		36EA5DFC1E6D05B700A69DEF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				36EA5E111E6D05B800A69DEF /* LaunchScreen.storyboard in Resources */,
+				36EA5E261E6D090D00A69DEF /* SWTableViewCell.xib in Resources */,
+				36EA5E0E1E6D05B800A69DEF /* Assets.xcassets in Resources */,
+				36EA5E0C1E6D05B800A69DEF /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		36EA5DFA1E6D05B700A69DEF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				36EA5E211E6D060D00A69DEF /* SWSingleDownloader.m in Sources */,
+				36EA5E091E6D05B800A69DEF /* ViewController.m in Sources */,
+				36EA5E061E6D05B800A69DEF /* AppDelegate.m in Sources */,
+				36EA5E031E6D05B800A69DEF /* main.m in Sources */,
+				36EA5E251E6D090D00A69DEF /* SWTableViewCell.m in Sources */,
+				36EA5E201E6D060D00A69DEF /* SWMultiDownloadOperation.m in Sources */,
+				36EA5E1F1E6D060D00A69DEF /* SWMultiDownloadManager.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		36EA5E0A1E6D05B800A69DEF /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				36EA5E0B1E6D05B800A69DEF /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		36EA5E0F1E6D05B800A69DEF /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				36EA5E101E6D05B800A69DEF /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		36EA5E131E6D05B800A69DEF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		36EA5E141E6D05B800A69DEF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		36EA5E161E6D05B800A69DEF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 2YW229246G;
+				INFOPLIST_FILE = SWMultiDownload/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.yidu.SWMultiDownload;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		36EA5E171E6D05B800A69DEF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 2YW229246G;
+				INFOPLIST_FILE = SWMultiDownload/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.yidu.SWMultiDownload;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		36EA5DF91E6D05B700A69DEF /* Build configuration list for PBXProject "SWMultiDownload" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				36EA5E131E6D05B800A69DEF /* Debug */,
+				36EA5E141E6D05B800A69DEF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		36EA5E151E6D05B800A69DEF /* Build configuration list for PBXNativeTarget "SWMultiDownload" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				36EA5E161E6D05B800A69DEF /* Debug */,
+				36EA5E171E6D05B800A69DEF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 36EA5DF61E6D05B700A69DEF /* Project object */;
+}
