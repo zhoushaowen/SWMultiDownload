@@ -14,8 +14,6 @@
 @property (nonatomic,strong) NSFileHandle *fileHandle;
 @property (nonatomic,strong) NSURLSessionDataTask *dataTask;
 @property (nonatomic,strong) NSURLSession *session;
-@property (nonatomic) BOOL isBeginReceiveData;//是否已经开始接收数据
-
 
 @end
 
@@ -47,6 +45,7 @@
 
 - (void)startDownloading {
     if(_isDownloading) return;
+    _isDownloading = YES;
     if(_dataTask){
         [_dataTask cancel];
     }
@@ -64,7 +63,6 @@
     self.session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:[[NSOperationQueue alloc] init]];
     _dataTask = [self.session dataTaskWithRequest:request];
     [_dataTask resume];
-    _isDownloading = YES;
 }
 
 - (void)cancelDownloading {
@@ -98,15 +96,9 @@
         
     }
     _currentLength += data.length;
-    CGFloat progress = _currentLength*1.0/_totalLength;
-    [self setValue:@(progress) forKey:@"progress"];
     if(_progressCallback){
-        _progressCallback(progress);
+        _progressCallback(_currentLength,_totalLength);
     }
-    if(self.beginReceiveDataCallback && !_isBeginReceiveData){
-        self.beginReceiveDataCallback();
-    }
-    _isBeginReceiveData = YES;
 }
 
 #pragma mark - NSURLSessionTaskDelegate
@@ -126,7 +118,6 @@
         _finishDownload(error);
     }
     _isDownloading = NO;
-    _isBeginReceiveData = NO;
     self.session = nil;
 }
 

@@ -9,15 +9,24 @@
 #import <Foundation/Foundation.h>
 #import "SWSingleDownloader.h"
 
+typedef void(^SWMultiDownloadProgressBlock)(unsigned long long receivedSize,unsigned long long expectedSize,NSURL *targetURL);
+typedef void(^SWMultiDownloadCompletedBlock)(NSError *error,NSString *dataPath,BOOL finished);
+
+
 @interface SWMultiDownloadOperation : NSOperation
 
-@property (nonatomic,copy,readonly) NSString *url;
-/** 文件保存的地址 */
-@property (nonatomic,copy,readonly) NSString *filePath;
-@property (nonatomic,readonly) BOOL isDownloading;
-@property (nonatomic,readonly) BOOL isFileExists;//文件是否以存在
-@property (nonatomic,readonly) CGFloat progress;
+/**
+ 文件资源地址
+ */
+@property (nonatomic,copy) NSString *url;
 
-- (void)startDownloadingWithUrl:(NSString *)url toPath:(NSString *)filePath progress:(void(^)(CGFloat progress))progressBlock completed:(void(^)(NSError *error))completedBlock;
+/**
+ 文件保存在本地的地址
+ */
+@property (nonatomic,copy) NSString *filePath;
+@property (nonatomic,strong) SWMultiDownloadProgressBlock progressBlock;
+@property (nonatomic,strong) SWMultiDownloadCompletedBlock completedBlock;
+
+- (void)cancelDownloading;
 
 @end

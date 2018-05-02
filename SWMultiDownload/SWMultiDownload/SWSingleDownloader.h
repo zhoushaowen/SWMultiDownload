@@ -19,11 +19,9 @@
 @property (nonatomic,readonly) unsigned long long currentLength;
 /** 总的文件大小 */
 @property (nonatomic,readonly) unsigned long long totalLength;
-@property (nonatomic,readonly) CGFloat progress;
 @property (nonatomic,strong,readonly) NSError *error;
 @property (nonatomic,readonly) BOOL isDownloading;
-@property (nonatomic,strong) void(^progressCallback)(CGFloat progress);
-@property (nonatomic,strong) void(^beginReceiveDataCallback)();
+@property (nonatomic,strong) void(^progressCallback)(unsigned long long currentLength,unsigned long long totalLength);
 @property (nonatomic,strong) void(^finishDownload)(NSError *error);
 
 - (void)startDownloading;

@@ -20,10 +20,10 @@
 
 @property (nonatomic,strong) NSMutableArray<SWSingleDownloader *> *singleDownloaders;
 @property (nonatomic,strong) NSError *error;
-@property (nonatomic,strong) void(^downloadProgress)(CGFloat progress);
-@property (nonatomic,strong) void(^finishDownload)(NSError *error);
+@property (nonatomic) BOOL isFinishedDownload;
 @property (nonatomic,strong) NSFileHandle *fileHandle;
 @property (nonatomic,strong) NSString *tmpDownloadPath;//临时下载路径
+@property (nonatomic) unsigned long long totalSize;
 
 @end
 
@@ -36,22 +36,32 @@
     dispatch_group_enter(_group);
     if([[NSFileManager defaultManager] fileExistsAtPath:_filePath]){
         NSLog(@"文件已存在");
-        [self setValue:@(YES) forKey:@"isFileExists"];
-        [self setValue:@1 forKey:@"progress"];
-        _isFileExists = YES;
+        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:_filePath error:nil];
+        self.totalSize = [attributes[NSFileSize] unsignedLongLongValue];
+        self.isFinishedDownload = YES;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(self.progressBlock){
+                self.progressBlock(self.totalSize, self.totalSize, [NSURL URLWithString:self.url]);
+            }
+        });
         [self finishDownloading];
         return;
     }
-    [self setValue:@(NO) forKey:@"isFileExists"];
-    [self getFileSizeCompletion:^{
+    [self getFileSizeWithCompletion:^(NSHTTPURLResponse * _Nullable response, NSError * _Nullable error) {
         if(self.isCancelled) return;
+        if(error || response.statusCode != 200){
+            self.isFinishedDownload = NO;
+            [self finishDownloading];
+            return;
+        }
+        long long fileSize = response.expectedContentLength;
+        self.totalSize = fileSize;
+        [self createDownloadersWithFileSize:fileSize];
         [self.singleDownloaders makeObjectsPerformSelector:@selector(startDownloading)];
-        [self setValue:@(YES) forKey:@"isDownloading"];
         NSLog(@"多线程下载开始");
     }];
     dispatch_group_wait(_group, DISPATCH_TIME_FOREVER);
     NSLog(@"*******操作执行完毕*********");
-
 }
 
 - (void)cancel
@@ -74,19 +84,20 @@
     return _fileHandle;
 }
 
-- (void)getFileSizeCompletion:(void(^)())complete {
+- (void)getFileSizeWithCompletion:(void(^)(NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completedBlock {
     if(_sessionDataTask){
         [_sessionDataTask cancel];
     }
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_url?:@""]];
     request.HTTPMethod = @"HEAD";//从指定的url上获取header内容(类似Get方式)
+    request.timeoutInterval = 30.0;
+    [request setValue:@"" forHTTPHeaderField:@"Accept-Encoding"];
     NSURLSession *session = [NSURLSession sharedSession];
     _sessionDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSLog(@"response:%@----error:%@",response,error);
         dispatch_async(dispatch_get_main_queue(), ^{
-            long long fileSize = response.expectedContentLength;
-            [self createDownloadersWithFileSize:fileSize];
-            if(complete){
-                complete();
+            if(completedBlock){
+                completedBlock((NSHTTPURLResponse *)response,error);
             }
         });
     }];
@@ -94,15 +105,14 @@
 }
 
 - (void)createDownloadersWithFileSize:(long long)fileSize {
-    long long singleFileSize = 0;//每条子线程下载量
+    unsigned long long singleFileSize = 0;//每条子线程下载量
     if(fileSize % MaxMultilineCount == 0){
         singleFileSize = fileSize/MaxMultilineCount;
     }else{
         singleFileSize = fileSize/MaxMultilineCount + 1;
     }
     dispatch_group_t group = dispatch_group_create();
-    dispatch_group_t beginReceiveDataGroup = dispatch_group_create();
-    for(int i=0;i<MaxMultilineCount;i++){
+    for(int i = 0;i < MaxMultilineCount;i++){
         SWSingleDownloader *downloader = [[SWSingleDownloader alloc] init];
         downloader.url = _url;
         NSString *fileName = [[_filePath stringByDeletingPathExtension] lastPathComponent];
@@ -110,10 +120,23 @@
         downloader.filePath = [filePath stringByAppendingPathExtension:@"tmp"];
         downloader.begin = i*singleFileSize;
         downloader.end = downloader.begin + singleFileSize - 1;
-        dispatch_group_enter(beginReceiveDataGroup);
-        downloader.beginReceiveDataCallback = ^{
-            dispatch_group_leave(beginReceiveDataGroup);
+        downloader.progressCallback = ^(unsigned long long currentLength, unsigned long long totalLength) {
+            @synchronized (self) {
+                //                    NSLog(@"%zd号单线下载器正在下载,下载进度:%f",[self.singleDownloaders indexOfObject:weakDownloader],currentLength*1.0/totalLength);
+                __block unsigned long long temp = 0;
+                [self.singleDownloaders enumerateObjectsUsingBlock:^(SWSingleDownloader*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    temp += obj.currentLength;
+                }];
+                CGFloat totalProgress = temp*1.0/self.totalSize;
+                NSLog(@"总的下载进度:-----------%f",totalProgress);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if(self.progressBlock){
+                        self.progressBlock(temp, self.totalSize, [NSURL URLWithString:self.url]);
+                    }
+                });
+            }
         };
+        
         dispatch_group_enter(group);
         downloader.finishDownload = ^(NSError *error){
             if(error){
@@ -125,42 +148,20 @@
         [self.singleDownloaders addObject:downloader];
     }
     
-    dispatch_group_notify(beginReceiveDataGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        for (SWSingleDownloader *singleDownloader in self.singleDownloaders) {
-            __weak typeof(singleDownloader) weakDownloader = singleDownloader;
-            singleDownloader.progressCallback = ^(CGFloat progress){
-                @synchronized (self) {
-                    NSLog(@"%zd号单线下载器正在下载,下载进度:%f",[self.singleDownloaders indexOfObject:weakDownloader],progress);
-                    __block CGFloat temp = 0;
-                    [self.singleDownloaders enumerateObjectsUsingBlock:^(SWSingleDownloader*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                        temp += obj.progress;
-                    }];
-                    CGFloat totalProgress = temp/MaxMultilineCount;
-                    [self setValue:@(totalProgress) forKey:@"progress"];
-                    if(self.singleDownloaders.count == MaxMultilineCount){
-                        NSLog(@"总的下载进度:-----------%f",totalProgress);
-                    }
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if(self.downloadProgress && self.singleDownloaders.count == MaxMultilineCount){
-                            self.downloadProgress(totalProgress);
-                        }
-                    });
-                }
-            };
-        }
-    });
-
     dispatch_group_notify(group, dispatch_get_main_queue(), ^{
         NSLog(@"多线程下载结束");
-        if(!_error){
+        if(!self.error){
             [self combineFilesCompleted:^{
+                self.isFinishedDownload = YES;
                 [self finishDownloading];
             }];
         }else{
+            self.isFinishedDownload = NO;
             [self finishDownloading];
         }
     });
     NSFileManager *fileManager = [NSFileManager defaultManager];
+    _tmpDownloadPath = [[_filePath stringByDeletingPathExtension] stringByAppendingPathExtension:@"totalTmp"];
     if(![fileManager fileExistsAtPath:_tmpDownloadPath]){
         //创建临时文件，文件大小要跟实际大小一致,保证多余的文件的不会重复.
         //1.创建一个0字节文件
@@ -170,26 +171,11 @@
     }
 }
 
-- (void)startDownloadingWithUrl:(NSString *)url toPath:(NSString *)filePath progress:(void(^)(CGFloat progress))progressBlock completed:(void(^)(NSError *error))completedBlock {
-    if(_isDownloading) return;
-    _error = nil;
-    _filePath = filePath;
-    _tmpDownloadPath = [[_filePath stringByDeletingPathExtension] stringByAppendingPathExtension:@"totalTmp"];
-    _url = url;
-    _finishDownload = completedBlock;
-    _downloadProgress = progressBlock;
-    if(self.isFinished) return;
-    SWMultiDownloadManager *manager = [SWMultiDownloadManager sharedInstance];
-    if([manager.queue operationCount] > 0){
-        [self addDependency:[[manager.queue operations] lastObject]];
-    }
-    [manager.queue addOperation:self];
-}
-
 - (void)cancelDownloading {
     [self.singleDownloaders makeObjectsPerformSelector:@selector(cancelDownloading)];
-    [self setValue:@(NO) forKey:@"isDownloading"];
     [self.singleDownloaders removeAllObjects];
+    self.progressBlock = nil;
+    self.completedBlock = nil;
     if(_group){
         dispatch_group_leave(_group);
     }
@@ -197,14 +183,10 @@
 
 - (void)finishDownloading {
     dispatch_async(dispatch_get_main_queue(), ^{
-        if(_finishDownload){
-            _finishDownload(_error);
-        }
-        if(_downloadProgress && !_error){
-            _downloadProgress(1);
+        if(self.completedBlock){
+            self.completedBlock(self.error, self.filePath, self.isFinishedDownload);
         }
     });
-    [self setValue:@(NO) forKey:@"isDownloading"];
     [self.singleDownloaders removeAllObjects];
     if(_group){
         dispatch_group_leave(_group);
@@ -212,33 +194,34 @@
 }
 
 //合并文件
-- (void)combineFilesCompleted:(void(^)())completed {
+- (void)combineFilesCompleted:(void(^)(void))completed {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSFileManager *fileManager = [NSFileManager defaultManager];
-        NSString *path = [_filePath stringByDeletingLastPathComponent];
+        NSString *path = [self.filePath stringByDeletingLastPathComponent];
         NSArray *array = [fileManager contentsOfDirectoryAtPath:path error:nil];
-        NSString *fileName = [[[_filePath lastPathComponent] stringByDeletingPathExtension] stringByAppendingPathExtension:@"tmp"];
+        NSString *fileName = [[[self.filePath lastPathComponent] stringByDeletingPathExtension] stringByAppendingPathExtension:@"tmp"];
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF ENDSWITH %@",fileName];
         NSArray *filteredArray = [array filteredArrayUsingPredicate:predicate];
-        dispatch_apply(filteredArray.count, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(size_t index) {
-            NSString *fileName = filteredArray[index];
-            NSString *path = [[_filePath stringByDeletingLastPathComponent] stringByAppendingPathComponent:fileName];
+        filteredArray = [filteredArray sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:nil ascending:YES]]];
+        for(int i=0;i<filteredArray.count;i++){
+            NSString *fileName = filteredArray[i];
+            NSString *path = [[self.filePath stringByDeletingLastPathComponent] stringByAppendingPathComponent:fileName];
             //读取文件片段
             NSFileHandle *handle = [NSFileHandle fileHandleForReadingAtPath:path];
             NSData *data = [handle readDataToEndOfFile];
-            unsigned long long offset = self.singleDownloaders[index].begin;
+            unsigned long long offset = self.singleDownloaders[i].begin;
             [self.fileHandle seekToFileOffset:offset];
             [self.fileHandle writeData:data];
             [handle closeFile];
             //删除下载的片段文件
             [fileManager removeItemAtPath:path error:nil];
-            NSLog(@"%zd合并完成",index);
-        });
+            NSLog(@"%d合并完成",i);
+        }
         NSLog(@"全部合并完成");
         [self.fileHandle closeFile];
         self.fileHandle = nil;
         //移动文件,以达到重命名文件的目的
-        [fileManager moveItemAtPath:_tmpDownloadPath toPath:_filePath error:nil];
+        [fileManager moveItemAtPath:self.tmpDownloadPath toPath:self.filePath error:nil];
         if(completed){
             dispatch_async(dispatch_get_main_queue(), ^{
                 completed();
